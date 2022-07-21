@@ -4,6 +4,7 @@ RUN apk add --update --no-cache \
     build-base \
     postgresql-client \
     postgresql-dev \
+    tzdata \
     curl
 
 ENV LC_ALL en_US.UTF-8
@@ -14,9 +15,8 @@ RUN ln -snf /usr/share/zoneinfo/$LOCAL_TIME \
 ARG APP_PATH=/opt/app/
 WORKDIR $APP_PATH
 
-# Add the app
-COPY . $APP_PATH
-
+COPY Gemfile Gemfile
+COPY Gemfile.lock Gemfile.lock
 # Install gems
 RUN export BUNDLER_VERSION=$(awk '/BUNDLED WITH/ { getline ; print $1 }' Gemfile.lock) \
   && gem install bundler --version $BUNDLER_VERSION \
@@ -27,3 +27,6 @@ RUN export BUNDLER_VERSION=$(awk '/BUNDLED WITH/ { getline ; print $1 }' Gemfile
   && rm -rf /usr/local/bundle/cache/*.gem \
   && find /usr/local/bundle/gems/ -name "*.c" -delete \
   && find /usr/local/bundle/gems/ -name "*.o" -delete
+
+# Add the app
+COPY . $APP_PATH
