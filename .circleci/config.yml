@@ -1,7 +1,8 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine.
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
+orbs:
+    heroku: circleci/heroku@1.2.6
 commands:
   ruby-setup:
     description: Install Bundler and dependencies
@@ -16,13 +17,13 @@ commands:
             BUNDLER_VERSION=$(awk '/BUNDLED WITH/ { getline; print $1 }' Gemfile.lock) \
               && gem install --no-document bundler -v $BUNDLER_VERSION
       - restore_cache:
-          key: billingcloud-ruby-{{ .Branch }}{{ checksum "Gemfile.lock" }}
+          key: ticket-service-ruby-{{ .Branch }}{{ checksum "Gemfile.lock" }}
       - run:
           name: Install Bundler dependencies
           command: |
             bundle install
       - save_cache:
-          key: billingcloud-ruby-{{ .Branch }}{{ checksum "Gemfile.lock" }}
+          key: ticket-service-ruby-{{ .Branch }}{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 # Define a job to be invoked later in a workflow.
@@ -39,12 +40,11 @@ jobs:
           POSTGRESQL_USER: postgres
           POSTGRESQL_PASSWORD: postgres
           POSTGRESQL_HOST: localhost
-          MESSAGE_BROKER_URL: amqp://guest:guest@localhost
       - image: circleci/postgres:11
         environment:
           POSTGRES_USER: "postgres"
           POSTGRES_PASSWORD: "postgres"
-          POSTGRES_DB: "billingcloud_development"
+          POSTGRES_DB: "ticket-service_development"
           POSTGRES_HOST_AUTH_METHOD: trust
     steps:
       - checkout
@@ -74,6 +74,15 @@ jobs:
             brakeman --color --no-exit-on-warn -o /dev/stdout -o brakeman-output.html
       - store_artifacts:
           path: brakeman-output.html
+  deploy_to_stage:
+    executor: heroku/default
+    steps:
+      - checkout
+      - check-authentication
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: ticket-service-stage-rb
+
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -90,8 +99,16 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  version: 2
+  Pipeline:
     jobs:
-      - say-hello
       - unit-test
       - security-test
+      - deploy-to-qa:
+          requires:
+            - unit-test
+            - security-test
+          filters:
+            branches:
+              only:
+                - main
