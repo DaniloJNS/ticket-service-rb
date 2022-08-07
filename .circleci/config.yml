@@ -119,6 +119,8 @@ workflows:
               only:
                 - main
       - promote-to-prod:
+          requires:
+            - deploy-to-stage
           type: approval
           context: promote-to-prod
           filters:
