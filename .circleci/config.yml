@@ -81,6 +81,13 @@ jobs:
       - heroku/install
       - heroku/deploy-via-git:
           app-name: ticket-service-stage-rb
+  deploy-to-prod:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: ticket-service-rb
 
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -107,6 +114,20 @@ workflows:
           requires:
             - unit-test
             - security-test
+          filters:
+            branches:
+              only:
+                - main
+      - promote-to-prod:
+          type: approval
+          context: promote-to-prod
+          filters:
+            branches:
+              only:
+                - main
+      - deploy-to-prod:
+          requires:
+            - promote-to-prod
           filters:
             branches:
               only:
