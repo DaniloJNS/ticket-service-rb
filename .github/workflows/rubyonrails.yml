@@ -20,14 +20,14 @@ jobs:
           - "5432:5432"
         env:
           POSTGRES_DB: ticket-service_development
-          POSTGRES_USER: rails
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
     env:
       RAILS_ENV: test
       POSTGRES_DB: ticket-service_development
-      POSTGRES_USER: rails
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST: "localhost"
+      POSTGRES_HOST: postgres
       POSTGRES_POOL: 5
       POSTGRES_PORT: 5432
 
