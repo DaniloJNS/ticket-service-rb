@@ -74,7 +74,7 @@ jobs:
             brakeman --color --no-exit-on-warn -o /dev/stdout -o brakeman-output.html
       - store_artifacts:
           path: brakeman-output.html
-  deploy_to_stage:
+  deploy-to-stage:
     executor: heroku/default
     steps:
       - checkout
@@ -104,7 +104,7 @@ workflows:
     jobs:
       - unit-test
       - security-test
-      - deploy-to-qa:
+      - deploy-to-stage:
           requires:
             - unit-test
             - security-test
