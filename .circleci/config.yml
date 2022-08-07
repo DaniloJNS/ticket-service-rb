@@ -63,7 +63,7 @@ jobs:
           path: test_results
   security-test:
     docker:
-      - image: circleci/ruby:2.5.3
+      - image: circleci/ruby:3.0.2
     steps:
       - checkout
       - run:
