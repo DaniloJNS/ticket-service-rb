@@ -16,5 +16,5 @@ services:
 
   db:
     image: postgres:13-alpine
-    container_name: postgresql
+    container_name: postgres
     env_file: .env.database
