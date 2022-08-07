@@ -1,12 +1,12 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: <%= ENV["POSTGRESQL_USER"] || ENV["USER"] || 'postgres' %>
-  database: <%= ENV["POSTGRESQL_DATABASE"] || 'ticket-service_development' %>
-  password: <%= ENV["POSTGRESQL_PASSWORD"] %>
-  host: <%= ENV["POSTGRESQL_HOST"] || 'localhost' %>
-  pool: <%= ENV["POSTGRESQL_POOL"] || 5 %>
-  port: <%= ENV["POSTGRESQL_PORT"] || 5432 %>
+  username: <%= ENV["POSTGRES_USER"] || ENV["USER"] || 'postgres' %>
+  database: <%= ENV["POSTGRES_DB"] || 'ticket-service_development' %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  host: <%= ENV["POSTGRES_HOST"] || 'localhost' %>
+  pool: <%= ENV["POSTGRES_POOL"] || 5 %>
+  port: <%= ENV["POSTGRES_PORT"] || 5432 %>
 
 development:
   <<: *default
