@@ -78,7 +78,6 @@ jobs:
     executor: heroku/default
     steps:
       - checkout
-      - check-authentication
       - heroku/install
       - heroku/deploy-via-git:
           app-name: ticket-service-stage-rb
