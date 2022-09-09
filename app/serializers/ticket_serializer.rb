@@ -15,8 +15,7 @@
 #
 #  index_tickets_on_ticketable  (ticketable_type,ticketable_id)
 #
-class Ticket < ApplicationRecord
-  belongs_to :ticketable, polymorphic: true
-
-  validates :price, :code, presence: true
+class TicketSerializer < ActiveModel::Serializer
+  attributes :code
+  attributes :price
 end

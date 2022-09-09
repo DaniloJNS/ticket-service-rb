@@ -8,15 +8,10 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-require 'rails_helper'
+class EventSerializer < ActiveModel::Serializer
+  attributes :id
+  attributes :name
+  attributes :description
 
-RSpec.describe Event, type: :model do
-  context "associations" do
-    it { should have_many(:tickets) }
-  end
-
-  context 'validations' do
-    it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:description) }
-  end
+  has_many :tickets, serializer: TicketSerializer
 end
