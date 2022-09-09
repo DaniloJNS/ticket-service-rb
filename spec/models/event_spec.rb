@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: events
@@ -11,7 +13,7 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  context "associations" do
+  context 'associations' do
     it { should have_many(:tickets) }
   end
 

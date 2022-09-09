@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: tickets
@@ -18,8 +20,8 @@
 require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
-  context "associations" do
-    it { should belong_to(:ticketable)}
+  context 'associations' do
+    it { should belong_to(:ticketable) }
   end
 
   context 'validations' do
