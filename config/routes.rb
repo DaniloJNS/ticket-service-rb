@@ -6,3 +6,4 @@ Rails.application.routes.draw do
     resources :events, only: %w[index]
   end
 end
+Rails.application.routes.default_url_options[:host] = ENV['HOST']

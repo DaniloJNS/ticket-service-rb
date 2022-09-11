@@ -16,7 +16,7 @@ class EventSerializer < ActiveModel::Serializer
 
   has_many :tickets, serializer: TicketSerializer
 
-  def image 
-    Rails.application.routes.url_helpers.rails_blob_path(object.image) if object.image.present?
+  def image
+    Rails.application.routes.url_helpers.rails_blob_path(object.image) if object.image.attached?
   end
 end

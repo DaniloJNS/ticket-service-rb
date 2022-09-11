@@ -4,7 +4,10 @@ Event.find_or_create_by(name: 'RubyConf+') do |event|
   event.description = 'O RubyConf existe para promover a conectividade entre profissionais de internet,'\
     ' estimular a troca de informações e fornecer conteúdos relevantes e de qualidade'\
                       ' sobre o vasto mundo da tecnologia.'
-  event.image.attach(io: File.open(Rails.root.join('storage', 'ruby-conf.png')), filename: 'ruby-conf.png')
+  event.image.attach(
+    io: File.open(Rails.root.join('storage', 'ruby-conf.png')),
+    filename: 'ruby-conf.png'
+  )
 end
 
 Event.find_or_create_by(name: 'Ruby Summit') do |event|
