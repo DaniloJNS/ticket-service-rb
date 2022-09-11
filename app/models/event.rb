@@ -10,6 +10,7 @@
 #
 class Event < ApplicationRecord
   has_many :tickets, as: :ticketable
+  has_one_attached :image
 
   validates :name, :description, presence: true
 end

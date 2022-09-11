@@ -12,6 +12,7 @@ class EventSerializer < ActiveModel::Serializer
   attributes :id
   attributes :name
   attributes :description
+  attributes :image
 
   has_many :tickets, serializer: TicketSerializer
 end
