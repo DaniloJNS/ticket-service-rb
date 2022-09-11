@@ -15,4 +15,6 @@ class EventSerializer < ActiveModel::Serializer
   attributes :image
 
   has_many :tickets, serializer: TicketSerializer
+
+  def image = Rails.application.routes.url_helpers.rails_blob_path(object.image)
 end
