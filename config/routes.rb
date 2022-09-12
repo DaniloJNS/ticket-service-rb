@@ -5,5 +5,8 @@ Rails.application.routes.draw do
     resources :tickets, only: %w[index]
     resources :events, only: %w[index]
   end
+
+  resources :images, only: %w[show]
 end
+
 Rails.application.routes.default_url_options[:host] = ENV['HOST']
