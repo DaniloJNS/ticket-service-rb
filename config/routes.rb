@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace :v1, defaults: { format: :json } do
     resources :tickets, only: %w[index]
-    resources :events, only: %w[index]
+    resources :events, only: %w[index show]
   end
 
   resources :images, only: %w[show]

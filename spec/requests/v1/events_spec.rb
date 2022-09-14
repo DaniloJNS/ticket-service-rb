@@ -7,13 +7,14 @@ RSpec.describe 'V1::Events', type: :request do
         get '/v1/events'
 
         expect(response).to have_http_status(:no_content)
+        expect(response.body).to be_empty
       end
     end
 
-    xcontext 'with many events' do
+    context 'with many events' do
+      let!(:events) { create_list(:event_with_tickets, 3) }
       let(:response_body) do
         events.map do |event|
-          event.reload
           load_dynamic_json_symbolized(
             'requests/events.json.erb',
             event: event,
@@ -21,7 +22,6 @@ RSpec.describe 'V1::Events', type: :request do
           )
         end
       end
-      let!(:events) { create_list(:event_with_tickets, 3) }
 
       it 'return all events' do
         get '/v1/events'
@@ -29,6 +29,35 @@ RSpec.describe 'V1::Events', type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to include 'application/json'
         expect(parsed_body).to eq(response_body)
+      end
+    end
+  end
+
+  describe 'GET /v1/events' do
+    context 'when event not exists' do
+      it 'return empty body' do
+        get '/v1/events/123'
+
+        expect(response).to have_http_status(:not_found)
+        expect(response.body).to be_empty
+      end
+    end
+
+    context 'when events exists' do
+      let!(:event) { create(:event_with_tickets) }
+      let(:response_body) do
+        load_dynamic_json_symbolized(
+          'requests/events.json.erb',
+          event: event,
+          ticket: event.tickets.first
+        )
+      end
+
+      it 'return data' do
+        get '/v1/events', params: { id: event.id }
+
+        expect(response).to have_http_status(:ok)
+        expect(parsed_body).to include(response_body)
       end
     end
   end

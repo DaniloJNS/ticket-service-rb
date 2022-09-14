@@ -2,8 +2,9 @@
     "id": "<%= event.id %>",
     "name": "FFaker",
     "description": "FFaker",
+    "image": null,
     "tickets": [{
-        "code": "<%= ticket.code %>",
-        "price": <%= ticket.price %>
+        "code": "<%= ticket&.code %>",
+        "price": <%= ticket&.price || 0 %>
     }]
 }
